@@ -36,7 +36,7 @@ self.addEventListener('install', function(event) {
 //Activate 
 self.addEventListener('activate', function(event) {
 
-  // var cacheWhitelist = ['pages-cache-v1', 'blog-posts-cache-v1'];
+  var cacheWhitelist = ['pages-cache-v1', 'blog-posts-cache-v1'];
   console.log("Service worker activated");
 
   event.waitUntil(
@@ -54,33 +54,33 @@ self.addEventListener('activate', function(event) {
 
 //Cache and Return Request 
 
-// self.addEventListener('fetch', function(event) {
-//     event.respondWith(
-//       caches.match(event.request)
-//         .then(function(response) {
-//           // Cache hit - return response
-//           if (response) {
-//             return response;
-//           }
-//           var fetchRequest = event.request.clone();
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(function(response) {
+          // Cache hit - return response
+          if (response) {
+            return response;
+          }
+          var fetchRequest = event.request.clone();
   
-//           return fetch(fetchRequest).then(
-//             function(response) {
-//               // Check if we received a valid response
-//               if(!response || response.status !== 200 || response.type !== 'basic') {
-//                 return response;
-//               }
+          return fetch(fetchRequest).then(
+            function(response) {
+              // Check if we received a valid response
+              if(!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
 
-//               var responseToCache = response.clone();
+              var responseToCache = response.clone();
   
-//               caches.open(CACHE_NAME)
-//                 .then(function(cache) {
-//                   cache.put(event.request, responseToCache);
-//                 });
+              caches.open(CACHE_NAME)
+                .then(function(cache) {
+                  cache.put(event.request, responseToCache);
+                });
   
-//               return response;
-//             }
-//           );
-//         })
-//       );
-//   });
+              return response;
+            }
+          );
+        })
+      );
+  });
