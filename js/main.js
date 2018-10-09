@@ -18,7 +18,9 @@ if ('serviceWorker' in navigator) {
       console.log('ServiceWorker registration failed: ', err);
     });
   });
-} 
+} else {
+  console.log('Service workers are not supported.');
+}
 
 let restaurants,
   neighborhoods,
